@@ -1,0 +1,99 @@
+<body>
+
+<div
+    style="background:black; height:500px;"
+    tabindex="1"
+    onmousemove="changeFilter(event.clientX, 
+                              event.clientY)"
+    onkeydown="setNote(event.key)"
+>
+
+</div>
+
+<script>
+var audio_context = window.AudioContext || window.webkitAudioContext;
+var con = new audio_context();
+
+var osc1 = con.createOscillator();
+var osc2 = con.createOscillator();
+var osc3 = con.createOscillator();
+var gain1 = con.createGain();
+var gain2 = con.createGain();
+var gain3 = con.createGain();
+var filter = con.createBiquadFilter();
+
+osc1.type = "sawtooth";
+osc1.frequency.value = 246.94;
+osc1.connect(gain1);
+
+osc2.type = "sawtooth";
+osc2.frequency.value = 241.94;
+osc2.connect(gain2);
+
+osc3.type = "sawtooth";
+osc3.frequency.value = 251.94;
+osc3.connect(gain3);
+
+gain1.connect(filter);
+gain1.gain.value = 0.6;
+
+gain2.connect(filter);
+gain2.gain.value = 0.2;
+
+gain3.connect(filter);
+gain3.gain.value = 0.2;
+
+filter.frequency.value = 100;
+filter.connect(con.destination);
+
+osc1.start();
+osc2.start();
+osc3.start();
+
+
+function changeFilter(mx, my){
+        filter.frequency.value = mx* 20;
+        filter.Q.value = my  / 20;
+    }
+
+ function setNote(key){
+        if (key == "z"){
+            osc1.frequency.value = 261.63;
+	    osc2.frequency.value = 256.63;
+            osc3.frequency.value = 266.63;
+        }
+	if (key == "s"){
+            osc1.frequency.value = 277.18;
+            osc2.frequency.value = 272.18;
+            osc3.frequency.value = 282.18;
+        }
+        if (key == "x"){
+            osc1.frequency.value = 293.66;
+	    osc2.frequency.value = 288.66;
+	    osc3.frequency.value = 298.66;
+        }
+	if (key == "d"){
+            osc1.frequency.value = 311.13;
+	    osc2.frequency.value = 306.13;
+	    osc3.frequency.value = 316.13;
+        }
+        if (key == "c"){
+            osc1.frequency.value = 329.63;
+	    osc2.frequency.value = 324.63;
+	    osc3.frequency.value = 334.63;
+        }
+	if (key == "f"){
+            osc1.frequency.value = 349.23;
+	    osc2.frequency.value = 344.23;
+	    osc3.frequency.value = 354.23;
+        }
+        if (key == "v"){
+            osc1.frequency.value = 369.99;
+	    osc2.frequency.value = 364.99;
+	    osc3.frequency.value = 374.99;
+        }
+   
+    }
+</script>
+
+</body>
