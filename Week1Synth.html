@@ -5,7 +5,8 @@
     tabindex="1"
     onmousemove="changeFilter(event.clientX, 
                               event.clientY)"
-    onkeydown="setNote(event.key)"
+    onkeydown="setNote(event.key); ampEnv()"
+	onkeyup="ampEnv()"
 >
 
 </div>
@@ -20,17 +21,19 @@ var osc3 = con.createOscillator();
 var gain1 = con.createGain();
 var gain2 = con.createGain();
 var gain3 = con.createGain();
+var env1 = con.createGain();
 var filter = con.createBiquadFilter();
+
 
 osc1.type = "sawtooth";
 osc1.frequency.value = 246.94;
 osc1.connect(gain1);
 
-osc2.type = "sawtooth";
+osc2.type = "square";
 osc2.frequency.value = 241.94;
 osc2.connect(gain2);
 
-osc3.type = "sawtooth";
+osc3.type = "square";
 osc3.frequency.value = 251.94;
 osc3.connect(gain3);
 
@@ -44,11 +47,10 @@ gain3.connect(filter);
 gain3.gain.value = 0.2;
 
 filter.frequency.value = 100;
-filter.connect(con.destination);
+filter.connect(env1);
 
-osc1.start();
-osc2.start();
-osc3.start();
+env1.gain.value = 0;
+env1.connect(con.destination);
 
 
 function changeFilter(mx, my){
@@ -94,6 +96,18 @@ function changeFilter(mx, my){
         }
    
     }
+
+function ampEnv(){
+	var now = con.currentTime;
+	osc1.start();
+	osc2.start();
+	osc3.start();
+	env1.gain.value = 1;
+	env1.gain.linearRampToValueAtTime(0, now + 4);
+	osc1.stop(now + 4.1);
+	osc2.stop(now + 4.1);
+	osc3.stop(now + 4.1);
+}
 </script>
 
 </body>
